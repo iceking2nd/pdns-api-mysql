@@ -7,9 +7,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Transformer\DomainTransformer;
 
 class DomainsController extends Controller
 {
+    protected $transformer;
+
+    public function __construct(DomainTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +29,7 @@ class DomainsController extends Controller
         return response()->json([
             'code' => 200,
             'status' => 'success',
-            'data' => $domains->toArray()
+            'data' => $this->transformer->transformCollection($domains->toArray()),
         ]);
     }
 
@@ -85,7 +93,7 @@ class DomainsController extends Controller
         return response()->json([
             'code' => 200,
             'status' => 'success',
-            'data' => $domain->toArray()
+            'data' => $this->transformer->transform($domain->toArray()),
         ]);
     }
 
