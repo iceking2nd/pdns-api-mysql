@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SuperMasters extends Model
+class SuperMaster extends Model
 {
     public $timestamps = false;
+    public $fillable = ['ip','nameserver','account'];
+
     protected $table = 'supermasters';
 }

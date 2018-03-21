@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1'],function (){
+    Route::apiResource('comments','V1\CommentsController');
+    Route::apiResource('cryptokeys','V1\CryptoKeysController');
+    Route::apiResource('domainmetadata','V1\DomainMetaDataController');
+    Route::apiResource('domains','V1\DomainsController');
+    Route::apiResource('records','V1\RecordsController');
+    Route::apiResource('supermasters','V1\SuperMastersController');
+    Route::apiResource('tsigkeys','V1\TSIGKeysController');
 });

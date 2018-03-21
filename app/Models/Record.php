@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DomainMetaData extends Model
+class Record extends Model
 {
     public $timestamps = false;
-    public $fillable = ['domain_id','kind','content'];
+    public $fillable = ['domain_id', 'name', 'type', 'content', 'ttl', 'prio', 'change_date', 'disabled', 'ordername', 'auth'];
 
-    protected $table = 'domainmetadata';
+    protected $table = 'records';
 
     public function domain()
     {

@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DomainMetaData extends Model
+class Comment extends Model
 {
     public $timestamps = false;
-    public $fillable = ['domain_id','kind','content'];
+    public $fillable = ['domain_id','name','type','modified_at','account','comment'];
 
-    protected $table = 'domainmetadata';
+    protected $table = 'comments';
 
     public function domain()
     {
