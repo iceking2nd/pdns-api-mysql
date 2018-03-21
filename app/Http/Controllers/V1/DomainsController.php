@@ -4,12 +4,12 @@ namespace App\Http\Controllers\V1;
 
 use App\Models\Domain;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\APIController;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Transformer\DomainTransformer;
 
-class DomainsController extends Controller
+class DomainsController extends APIController
 {
     protected $transformer;
 
@@ -26,11 +26,7 @@ class DomainsController extends Controller
     public function index()
     {
         $domains = Domain::all();
-        return response()->json([
-            'code' => 200,
-            'status' => 'success',
-            'data' => $this->transformer->transformCollection($domains->toArray()),
-        ]);
+        return $this->responseWithData($this->transformer->transformCollection($domains->toArray()));
     }
 
     /**
@@ -58,28 +54,14 @@ class DomainsController extends Controller
             if ($validator->passes())
             {
                 $domain = Domain::create((array)$data);
-                return response()->json([
-                    'code' => 201,
-                    'status' => 'success',
-                    'data' => $domain->toArray(),
-                ],201);
+                return $this->responseWithCreatedData($domain->toArray());
             }
             else
             {
-                return response()->json([
-                    'code' => 400,
-                    'status' => 'failed',
-                    'message' => $validator->errors()->getMessages(),
-                    'data' => null,
-                ],400);
+                return $this->responseErrorParameters($validator->errors()->getMessages());
             }
         }
-        return response()->json([
-            'code' => 400,
-            'status' => 'failed',
-            'message' => 'Invalid parameters',
-            'data' => null,
-        ],400);
+        return $this->responseErrorParameters();
     }
 
     /**
@@ -90,11 +72,7 @@ class DomainsController extends Controller
      */
     public function show(Domain $domain)
     {
-        return response()->json([
-            'code' => 200,
-            'status' => 'success',
-            'data' => $this->transformer->transform($domain->toArray()),
-        ]);
+        return $this->responseWithData($this->transformer->transform($domain->toArray()));
     }
 
     /**
@@ -110,34 +88,27 @@ class DomainsController extends Controller
         if (!is_null($data))
         {
             $rule = [
+                'name' => 'sometimes|required|unique:domains,name',
                 'master' => 'required_if:type,==,SLAVE',
+                'type' => [
+                    'sometimes',
+                    'required',
+                    Rule::in(['MASTER','SLAVE','NATIVE']),
+                ],
+                'account' => 'sometimes|required'
             ];
             $validator = Validator::make($data,$rule);
             if ($validator->passes())
             {
                 $domain->update($data);
-                return response()->json([
-                    'code' => 204,
-                    'status' => 'success',
-                    'data' => $domain->toArray(),
-                ],204);
+                return $this->responseWithUpdatedData($domain->toArray());
             }
             else
             {
-                return response()->json([
-                    'code' => 400,
-                    'status' => 'failed',
-                    'message' => $validator->errors()->getMessages(),
-                    'data' => null,
-                ],400);
+                return $this->responseErrorParameters($validator->errors()->getMessages());
             }
         }
-        return response()->json([
-            'code' => 400,
-            'status' => 'failed',
-            'message' => 'Invalid parameters',
-            'data' => null,
-        ],400);
+        return $this->responseErrorParameters();
     }
 
     /**
@@ -149,6 +120,6 @@ class DomainsController extends Controller
     public function destroy(Domain $domain)
     {
         $domain->delete();
-        return response()->json([],204);
+        return $this->responseSuccessWithoutData();
     }
 }
