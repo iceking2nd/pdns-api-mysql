@@ -4,9 +4,9 @@ namespace App\Http\Controllers\V1;
 
 use App\Models\Record;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\APIController;
 
-class RecordsController extends Controller
+class RecordsController extends APIController
 {
     /**
      * Display a listing of the resource.

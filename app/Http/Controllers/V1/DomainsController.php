@@ -8,6 +8,8 @@ use App\Http\Controllers\APIController;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Transformer\DomainTransformer;
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
 
 class DomainsController extends APIController
 {
@@ -25,8 +27,8 @@ class DomainsController extends APIController
      */
     public function index()
     {
-        $domains = Domain::all();
-        return $this->responseWithData($this->transformer->transformCollection($domains->toArray()));
+        $domains = Domain::paginate(10);
+        return $this->response->paginator($domains,new DomainTransformer());
     }
 
     /**
@@ -38,7 +40,7 @@ class DomainsController extends APIController
     public function store(Request $request)
     {
         $data = json_decode($request->instance()->getContent(),true);
-        if (!is_null($data))
+        if (!is_null($data) && count($data) != 0)
         {
             $rule = [
                 'name' => 'required|unique:domains,name',
@@ -53,15 +55,18 @@ class DomainsController extends APIController
             $validator = Validator::make($data,$rule);
             if ($validator->passes())
             {
-                $domain = Domain::create((array)$data);
-                return $this->responseWithCreatedData($domain->toArray());
+                Domain::create((array)$data);
+                return $this->response->created();
             }
             else
             {
-                return $this->responseErrorParameters($validator->errors()->getMessages());
+                throw new StoreResourceFailedException('Could not create new domain.',$validator->errors());
             }
         }
-        return $this->responseErrorParameters();
+        else
+        {
+            throw new StoreResourceFailedException('Domain data is required.');
+        }
     }
 
     /**
@@ -72,7 +77,7 @@ class DomainsController extends APIController
      */
     public function show(Domain $domain)
     {
-        return $this->responseWithData($this->transformer->transform($domain->toArray()));
+        return $this->response->item($domain,new DomainTransformer());
     }
 
     /**
@@ -85,7 +90,7 @@ class DomainsController extends APIController
     public function update(Request $request, Domain $domain)
     {
         $data = json_decode($request->instance()->getContent(),true);
-        if (!is_null($data))
+        if (!is_null($data) && count($data) != 0)
         {
             $rule = [
                 'name' => 'sometimes|required|unique:domains,name',
@@ -101,14 +106,17 @@ class DomainsController extends APIController
             if ($validator->passes())
             {
                 $domain->update($data);
-                return $this->responseWithUpdatedData($domain->toArray());
+                return $this->response->noContent();
             }
             else
             {
-                return $this->responseErrorParameters($validator->errors()->getMessages());
+                throw new UpdateResourceFailedException('Domain was not updated.',$validator->errors());
             }
         }
-        return $this->responseErrorParameters();
+        else
+        {
+            throw new UpdateResourceFailedException('Domain data is required.');
+        }
     }
 
     /**
@@ -120,6 +128,6 @@ class DomainsController extends APIController
     public function destroy(Domain $domain)
     {
         $domain->delete();
-        return $this->responseSuccessWithoutData();
+        return $this->response->noContent();
     }
 }

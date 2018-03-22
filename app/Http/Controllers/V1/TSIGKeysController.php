@@ -4,9 +4,9 @@ namespace App\Http\Controllers\V1;
 
 use App\Models\TSIGKey;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\APIController;
 
-class TSIGKeysController extends Controller
+class TSIGKeysController extends APIController
 {
     /**
      * Display a listing of the resource.

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\V1;
 
 use App\Models\DomainMetaData;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\APIController;
 
-class DomainMetaDataController extends Controller
+class DomainMetaDataController extends APIController
 {
     /**
      * Display a listing of the resource.

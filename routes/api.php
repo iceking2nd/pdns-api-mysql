@@ -13,12 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => 'v1'],function (){
-    Route::apiResource('comments','V1\CommentsController');
-    Route::apiResource('cryptokeys','V1\CryptoKeysController');
-    Route::apiResource('domainmetadata','V1\DomainMetaDataController');
-    Route::apiResource('domains','V1\DomainsController');
-    Route::apiResource('records','V1\RecordsController');
-    Route::apiResource('supermasters','V1\SuperMastersController');
-    Route::apiResource('tsigkeys','V1\TSIGKeysController');
+$api = app('Dingo\Api\Routing\Router');
+$api->version(['v1'],['namespace' => 'App\Http\Controllers','middleware' => ['api']],function($api){
+    $api->post('user/login','AuthController@authenticate')->name('user.login');
+});
+$api->version('v1',['namespace' => 'App\Http\Controllers\V1','middleware' => ['api','jwt.auth']],function($api){
+    $api->resource('comments','CommentsController');
+    $api->resource('cryptokeys','CryptoKeysController');
+    $api->resource('domainmetadata','DomainMetaDataController');
+    $api->resource('domains','DomainsController');
+    $api->resource('records','RecordsController');
+    $api->resource('supermasters','SuperMastersController');
+    $api->resource('tsigkeys','TSIGKeysController');
 });

@@ -8,10 +8,13 @@
 
 namespace App\Transformer;
 
+use App\Models\Domain;
+use League\Fractal\TransformerAbstract;
 
-class DomainTransformer extends Transformer
+
+class DomainTransformer extends TransformerAbstract
 {
-    public function transform($domain)
+    public function transform(Domain $domain)
     {
         return [
             'domain_id' => $domain['id'],

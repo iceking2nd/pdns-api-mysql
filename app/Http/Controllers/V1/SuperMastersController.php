@@ -4,9 +4,9 @@ namespace App\Http\Controllers\V1;
 
 use App\Models\SuperMaster;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\APIController;
 
-class SuperMastersController extends Controller
+class SuperMastersController extends APIController
 {
     /**
      * Display a listing of the resource.
