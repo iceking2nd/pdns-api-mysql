@@ -18,6 +18,7 @@ $api->version(['v1'],['namespace' => 'App\Http\Controllers','middleware' => ['ap
     $api->post('user/login','AuthController@authenticate')->name('user.login');
 });
 $api->version('v1',['namespace' => 'App\Http\Controllers\V1','middleware' => ['api','jwt.auth']],function($api){
+    $api->get('comments/by/{method}/{data}',[ 'uses' => 'CommentsController@GetByMethod']);
     $api->resource('comments','CommentsController');
     $api->resource('cryptokeys','CryptoKeysController');
     $api->resource('domainmetadata','DomainMetaDataController');

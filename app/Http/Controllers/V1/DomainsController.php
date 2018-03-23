@@ -124,7 +124,12 @@ class DomainsController extends APIController
         return $this->response->noContent();
     }
 
-    public function GetByMethod($method,$data)
+    /**
+     * @param $method
+     * @param $data
+     * @return \Dingo\Api\Http\Response
+     */
+    public function GetByMethod($method, $data)
     {
         $transformer = [
             'domain_id' => 'id',
@@ -139,7 +144,7 @@ class DomainsController extends APIController
             $domains = Domain::where($transformer[$method],'=',$data)->get();
             if (count($domains))
             {
-                $this->response->collection($domains,new DomainTransformer());
+                return $this->response->collection($domains,new DomainTransformer());
             }
             else
             {
