@@ -21,6 +21,7 @@ $api->version('v1',['namespace' => 'App\Http\Controllers\V1','middleware' => ['a
     $api->resource('comments','CommentsController');
     $api->resource('cryptokeys','CryptoKeysController');
     $api->resource('domainmetadata','DomainMetaDataController');
+    $api->get('domains/by/{method}/{data}',[ 'uses' => 'DomainsController@GetByMethod']);
     $api->resource('domains','DomainsController');
     $api->resource('records','RecordsController');
     $api->resource('supermasters','SuperMastersController');

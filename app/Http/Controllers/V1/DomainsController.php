@@ -13,13 +13,6 @@ use Dingo\Api\Exception\UpdateResourceFailedException;
 
 class DomainsController extends APIController
 {
-    protected $transformer;
-
-    public function __construct(DomainTransformer $transformer)
-    {
-        $this->transformer = $transformer;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -129,5 +122,33 @@ class DomainsController extends APIController
     {
         $domain->delete();
         return $this->response->noContent();
+    }
+
+    public function GetByMethod($method,$data)
+    {
+        $transformer = [
+            'domain_id' => 'id',
+            'domain_name' => 'name',
+            'master_server' => 'master',
+            'last_check_time' => 'last_check',
+            'zone_type' => 'type',
+            'maintenance_account' => 'account'
+        ];
+        if(array_key_exists($method,$transformer))
+        {
+            $domains = Domain::where($transformer[$method],'=',$data)->get();
+            if (count($domains))
+            {
+                $this->response->collection($domains,new DomainTransformer());
+            }
+            else
+            {
+                $this->response->errorNotFound();
+            }
+        }
+        else
+        {
+            $this->response->errorBadRequest('Invalid query method');
+        }
     }
 }
