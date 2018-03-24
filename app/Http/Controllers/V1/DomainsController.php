@@ -132,12 +132,12 @@ class DomainsController extends APIController
     public function GetByMethod($method, $data)
     {
         $transformer = [
-            'domain_id' => 'id',
-            'domain_name' => 'name',
-            'master_server' => 'master',
-            'last_check_time' => 'last_check',
-            'zone_type' => 'type',
-            'maintenance_account' => 'account'
+            'id' => 'id',
+            'name' => 'name',
+            'master' => 'master',
+            'last_check' => 'last_check',
+            'type' => 'type',
+            'account' => 'account'
         ];
         if(array_key_exists($method,$transformer))
         {

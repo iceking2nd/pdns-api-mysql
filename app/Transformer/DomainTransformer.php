@@ -17,12 +17,12 @@ class DomainTransformer extends TransformerAbstract
     public function transform(Domain $domain)
     {
         return [
-            'domain_id' => $domain['id'],
-            'domain_name' => $domain['name'],
-            'master_server' => $domain['master'],
-            'last_check_time' => $domain['last_check'],
-            'zone_type' => $domain['type'],
-            'maintenance_account' => $domain['account']
+            'id' => $domain['id'],
+            'name' => $domain['name'],
+            'master' => $domain['master'],
+            'last_check' => $domain['last_check'],
+            'type' => $domain['type'],
+            'account' => $domain['account']
         ];
     }
 }

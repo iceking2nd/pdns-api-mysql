@@ -14,10 +14,11 @@ class CreateSupermastersTable extends Migration
     public function up()
     {
         Schema::create('supermasters', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('ip',64);
             $table->string('nameserver',255);
             $table->string('account')->charset('utf8')->collation('utf8_unicode_ci');
-            $table->primary(['ip','nameserver']);
+            $table->index(['ip','nameserver']);
             $table->engine = 'InnoDB';
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
