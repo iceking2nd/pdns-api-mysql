@@ -24,7 +24,7 @@ class CreateRecordsTable extends Migration
             $table->string('name',255)->nullable();
             $table->string('type',10)->nullable();
             $table->string('content',64000)->nullable();
-            $table->integer('ttl')->default(3600);
+            $table->integer('ttl')->nullable()->default(3600);
             $table->integer('prio')->nullable();
             $table->integer('change_date')->nullable();
             $table->tinyInteger('disabled')->default(0);
