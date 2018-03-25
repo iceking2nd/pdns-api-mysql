@@ -138,4 +138,13 @@ class SuperMastersController extends APIController
             $this->response->errorBadRequest('Invalid query method');
         }
     }
+
+    /**
+     * @return \Dingo\Api\Http\Response
+     */
+    public function list()
+    {
+        $supermasters = SuperMaster::all();
+        return $this->response->collection($supermasters,new SuperMasterTransformer());
+    }
 }

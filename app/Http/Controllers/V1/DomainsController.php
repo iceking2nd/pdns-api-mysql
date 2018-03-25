@@ -156,4 +156,13 @@ class DomainsController extends APIController
             $this->response->errorBadRequest('Invalid query method');
         }
     }
+
+    /**
+     * @return \Dingo\Api\Http\Response
+     */
+    public function list()
+    {
+        $domains = Domain::all();
+        return $this->response->collection($domains,new DomainTransformer());
+    }
 }

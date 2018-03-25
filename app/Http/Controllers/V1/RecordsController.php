@@ -209,4 +209,13 @@ class RecordsController extends APIController
         }
         return false;
     }
+
+    /**
+     * @return \Dingo\Api\Http\Response
+     */
+    public function list()
+    {
+        $records = Record::all();
+        return $this->response->collection($records,new RecordTransformer());
+    }
 }

@@ -170,4 +170,13 @@ class DomainMetaDataController extends APIController
             $this->response->errorBadRequest('Invalid query method');
         }
     }
+
+    /**
+     * @return \Dingo\Api\Http\Response
+     */
+    public function list()
+    {
+        $domainMetaData = DomainMetaData::all();
+        return $this->response->collection($domainMetaData,new DomainMetaDataTransformer());
+    }
 }

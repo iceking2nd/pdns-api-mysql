@@ -147,4 +147,13 @@ class CryptoKeysController extends APIController
             $this->response->errorBadRequest('Invalid query method');
         }
     }
+
+    /**
+     * @return \Dingo\Api\Http\Response
+     */
+    public function list()
+    {
+        $cryptos = CryptoKey::all();
+        return $this->response->collection($cryptos,new CryptoKeyTransformer());
+    }
 }

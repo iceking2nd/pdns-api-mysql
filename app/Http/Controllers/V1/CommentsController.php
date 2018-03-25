@@ -153,4 +153,13 @@ class CommentsController extends APIController
             $this->response->errorBadRequest('Invalid query method');
         }
     }
+
+    /**
+     * @return \Dingo\Api\Http\Response
+     */
+    public function list()
+    {
+        $comments = Comment::all();
+        return $this->response->collection($comments,new CommentTransformer());
+    }
 }

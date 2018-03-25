@@ -144,4 +144,13 @@ class TSIGKeysController extends APIController
             $this->response->errorBadRequest('Invalid query method');
         }
     }
+
+    /**
+     * @return \Dingo\Api\Http\Response
+     */
+    public function list()
+    {
+        $tsigkeys = TSIGKey::all();
+        return $this->response->collection($tsigkeys,new TSIGKeyTransformer());
+    }
 }
