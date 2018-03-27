@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 $api = app('Dingo\Api\Routing\Router');
 $api->version(['v1'],['namespace' => 'App\Http\Controllers','middleware' => ['api']],function($api){
     $api->post('user/login','AuthController@authenticate')->name('user.login');
+    $api->get('user/check','AuthController@check')->middleware(['api','jwt.auth'])->name('user.check');
 });
 $api->version('v1',['namespace' => 'App\Http\Controllers\V1','middleware' => ['api','jwt.auth']],function($api){
     $api->get('comments/all',[ 'uses' => 'CommentsController@list']);
@@ -39,5 +40,4 @@ $api->version('v1',['namespace' => 'App\Http\Controllers\V1','middleware' => ['a
     $api->get('tsigkeys/all',[ 'uses' => 'TSIGKeysController@list']);
     $api->get('tsigkeys/by/{method}/{data}',[ 'uses' => 'TSIGKeysController@GetByMethod']);
     $api->resource('tsigkeys','TSIGKeysController');
-    $api->get('uset/check','AuthController@check')->name('user.check');
 });
