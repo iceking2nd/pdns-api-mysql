@@ -39,4 +39,5 @@ $api->version('v1',['namespace' => 'App\Http\Controllers\V1','middleware' => ['a
     $api->get('tsigkeys/all',[ 'uses' => 'TSIGKeysController@list']);
     $api->get('tsigkeys/by/{method}/{data}',[ 'uses' => 'TSIGKeysController@GetByMethod']);
     $api->resource('tsigkeys','TSIGKeysController');
+    $api->get('uset/check','AuthController@check')->name('user.check');
 });

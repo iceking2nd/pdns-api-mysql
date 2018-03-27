@@ -26,4 +26,9 @@ class AuthController extends APIController
         // all good so return the token
         return response()->json(compact('token'));
     }
+
+    public function check()
+    {
+        return $this->response->noContent();
+    }
 }
