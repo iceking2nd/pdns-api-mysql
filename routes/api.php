@@ -17,6 +17,10 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version(['v1'],['namespace' => 'App\Http\Controllers','middleware' => ['api']],function($api){
     $api->post('user/login','AuthController@authenticate')->name('user.login');
     $api->get('user/check','AuthController@check')->middleware(['api','jwt.auth'])->name('user.check');
+    if (env('DB_CONNECTION') == 'mysql')
+    {
+        $api->get('system/backup','SystemController@backup')->middleware(['api','jwt.auth'])->name('system.backup');
+    }
 });
 $api->version('v1',['namespace' => 'App\Http\Controllers\V1','middleware' => ['api','jwt.auth']],function($api){
     $api->get('comments/all',[ 'uses' => 'CommentsController@list']);
