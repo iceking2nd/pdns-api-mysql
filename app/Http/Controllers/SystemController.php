@@ -15,6 +15,6 @@ class SystemController extends APIController
         $db_name = env('DB_DATABASE');
 
         $command = sprintf('mysqldump -h\'%s\' -P\'%s\' -u\'%s\' -p\'%s\' %s', $db_host, $db_port, $db_user, $db_pass, $db_name);
-        dd($command);
+        dd(exec($command));
     }
 }
